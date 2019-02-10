@@ -19,6 +19,19 @@ class GroupHelper:
         input.type_keys("\n") # чтобы завершить редактирование, нажимаем Enter
         self.close_group_editor()
 
+    def delete_group(self, number):
+        self.open_group_editor()
+        tree = self.group_editor.window(auto_id="uxAddressTreeView")
+        root = tree.tree_root()
+        group_list = [node.text() for node in root.children()]
+        root.children()[number].click()
+        self.group_editor.window(auto_id="uxDeleteAddressButton").click()
+        # confirm deleting
+        self.del_group_window = self.app.application.window(title="Delete group")
+        self.del_group_window.window(auto_id="uxDeleteAllRadioButton").click()
+        self.del_group_window.window(auto_id="uxOKAddressButton").click()
+        self.close_group_editor()
+
     def open_group_editor(self):
         self.app.main_window.window(auto_id="groupButton").click()
         self.group_editor = self.app.application.window(title="Group editor")
